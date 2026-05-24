@@ -66,6 +66,36 @@ def load_urls(url_list_file: str) -> list[str]:
         sys.exit(1)
 
 
+# ── Title Cleaning ─────────────────────────────────────────────────────────
+
+def clean_title(name: str) -> str:
+    """Strip artist names, video labels, and movie names from a YouTube title."""
+    import re
+    name = re.split(r"\s*[｜|]\s*", name)[0]
+    m = re.search(r'[\uff02"\u201c](.+?)[\uff02"\u201d]', name)
+    if m:
+        return m.group(1).strip()
+    name = re.sub(r"^@\S+\s*[-\u2013\u2014\uff1a:]\s*", "", name)
+    name = re.sub(r"^[^\uff1a]+\uff1a\s*", "", name)
+    name = re.sub(
+        r"(?i)\s*[\(\[][^\)\]]*(?:official|video|audio|lyric|full|song|slowed|reverbed|music|title|track|theme)[^\)\]]*[\)\]].*$",
+        "", name,
+    )
+    name = re.sub(r"\s*[\(\[][^\)\]]*[\)\]]", "", name)
+    _np = (r"(?:Official\s+Music\s+Video|Official\s+(?:Video|Audio)|"
+           r"Lyric(?:al)?\s+Video|Full\s+(?:Video|Song)|Music\s+Video|"
+           r"Slowed(?:\s*[&]\s*Reverbed)?|Title\s+(?:Track|Song)|"
+           r"Theme\s+Song|Lyric(?:al)?s?)")
+    name = re.sub(rf"(?i)\s+{_np}(?=\s*[-\u2013\u2014]|\s|$)", "", name)
+    name = re.sub(r"(?i)\s+(?:Song|Video)\s*$", "", name)
+    name = re.sub(r"(?i)\s+f(?:ea)?t\.?\s+.*$", "", name)
+    name = re.sub(r"\s*[\u2013\u2014]\s+.*$", "", name)
+    name = re.sub(r"\s+-\s+.*$", "", name)
+    name = re.sub(r"(?i)-lyric(?:al)?s?\s*$", "", name)
+    name = re.sub(r"\s*[-\u2013]\s*$", "", name)
+    return re.sub(r"\s+", " ", name).strip()
+
+
 # ── Download ────────────────────────────────────────────────────────────────
 
 def create_ydl_opts(save_path: str, audio_format: str, skip_existing: bool) -> dict:
@@ -87,10 +117,24 @@ def create_ydl_opts(save_path: str, audio_format: str, skip_existing: bool) -> d
             {
                 "key": "FFmpegExtractAudio",
                 "preferredcodec": extract_audio_format,
-                "preferredquality": "192",
+                "preferredquality": "320",
             }
         ],
         "outtmpl": os.path.join(save_path, "%(title)s.%(ext)s"),
+        "replace_in_metadata": [
+            ["title", r"\s*[｜|].*$", ""],
+            ["title", r"^[^\uff1a]+\uff1a\s*", ""],
+            ["title", r"(?i)\s*[\(\[][^\)\]]*(?:official|video|audio|lyric|full|song|slowed|reverbed|music|title|track|theme)[^\)\]]*[\)\]].*$", ""],
+            ["title", r"\s*[\(\[][^\)\]]*[\)\]]", ""],
+            ["title", r"(?i)\s+(?:Official\s+Music\s+Video|Official\s+(?:Video|Audio)|Lyric(?:al)?\s+Video|Full\s+(?:Video|Song)|Music\s+Video|Slowed(?:\s*[&]\s*Reverbed)?|Title\s+(?:Track|Song)|Lyric(?:al)?s?)(?=\s*[-\u2013\u2014]|\s|$)", ""],
+            ["title", r"(?i)\s+(?:Song|Video)\s*$", ""],
+            ["title", r"(?i)\s+f(?:ea)?t\.?\s+.*$", ""],
+            ["title", r"\s*[\u2013\u2014]\s+.*$", ""],
+            ["title", r"\s+-\s+.*$", ""],
+            ["title", r"(?i)-lyric(?:al)?s?\s*$", ""],
+            ["title", r"\s*[-\u2013]\s*$", ""],
+            ["title", r"\s+", " "],
+        ],
         "quiet": False,
         "no_warnings": False,
         "skip_unavailable_fragments": True,
@@ -125,7 +169,8 @@ def download_songs(urls: list[str], config: dict, progress: Progress):
             try:
                 progress.console.print(f"[yellow]→[/] {url}")
                 info = ydl.extract_info(url, download=False)
-                title = info.get("title", url) if info else url
+                raw_title = info.get("title", url) if info else url
+                title = clean_title(raw_title)
                 ext = config["audio_format"]
                 expected_file = Path(config["save_path"]) / f"{title}.{ext}"
 
