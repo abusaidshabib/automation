@@ -195,11 +195,12 @@ class PlaylistDownloader:
                 task_label = f"[{idx:>{pad}}/{total}] {short_title}"
                 self._video_task = progress.add_task(task_label, total=100)
 
-                # Output template
+                # Output template – prefix with zero-padded playlist position
+                # so Windows File Explorer sorts files in playlist order.
                 if is_playlist:
                     outtmpl = str(
                         self.save_path /
-                        f"%(playlist_index)0{pad}d - %(title)s.%(ext)s"
+                        f"{idx:0{pad}d} - %(title)s.%(ext)s"
                     )
                 else:
                     outtmpl = str(self.save_path / "%(title)s.%(ext)s")
