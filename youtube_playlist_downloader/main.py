@@ -7,6 +7,7 @@ import argparse
 import os
 import re
 import shutil
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -145,6 +146,107 @@ def apply_cookie_opts(opts: dict, cookies_from_browser: str | None, cookies_file
     return opts
 
 
+def _runtime_path(path: str | Path) -> Path | None:
+    """Return the path when it points to an executable file."""
+    candidate = Path(path)
+    if candidate.is_file() and os.access(candidate, os.X_OK):
+        return candidate
+    return None
+
+
+def _node_runtime_version(path: Path) -> tuple[int, int] | None:
+    """Return the major/minor Node version when it meets yt-dlp's minimum."""
+    try:
+        output = subprocess.check_output(
+            [str(path), "--version"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+            timeout=5,
+        ).strip()
+    except (OSError, subprocess.SubprocessError):
+        return None
+    match = re.match(r"v?(\d+)\.(\d+)", output)
+    if not match:
+        return None
+    major, minor = int(match.group(1)), int(match.group(2))
+    if major > 20 or (major == 20 and minor >= 0):
+        return major, minor
+    return None
+
+
+def find_js_runtime() -> tuple[str, str] | None:
+    """Return the first supported JavaScript runtime available on this machine."""
+    candidates: list[tuple[str, Path | None]] = [
+        ("deno", _runtime_path(shutil.which("deno") or "")),
+        ("deno", _runtime_path(Path.home() / ".deno" / "bin" / "deno")),
+        ("deno", _runtime_path(SCRIPT_DIR / ".bin" / "deno")),
+        ("node", _runtime_path(shutil.which("node") or "")),
+    ]
+    for name, path in candidates:
+        if not path:
+            continue
+        if name == "node" and not _node_runtime_version(path):
+            continue
+        return name, str(path)
+    return None
+
+
+def ensure_linux_cookie_deps(cookies_from_browser: str | None) -> None:
+    """Exit when browser cookies are requested on Linux without secretstorage."""
+    if not cookies_from_browser or sys.platform != "linux":
+        return
+    try:
+        import secretstorage  # noqa: F401
+    except ImportError:
+        console.print(
+            Panel(
+                "[bold red]Browser cookie extraction needs secretstorage on Linux.[/]\n"
+                "Install it with:\n"
+                f"[cyan]{SCRIPT_DIR / '.venv' / 'bin' / 'python3'} -m pip install secretstorage[/]\n"
+                "or reinstall dependencies:\n"
+                f"[cyan]{SCRIPT_DIR / '.venv' / 'bin' / 'python3'} -m pip install -r requirements.txt[/]",
+                title="[red]Missing Dependency",
+                border_style="red",
+            )
+        )
+        sys.exit(1)
+
+
+def ensure_js_runtime(cookies_from_browser: str | None) -> None:
+    """Exit when YouTube downloads need a JS runtime but none is available."""
+    if find_js_runtime():
+        return
+
+    cookie_note = (
+        "\n[bold]Note:[/] With [cyan]--cookies-from-browser[/], yt-dlp must use the web "
+        "client, which requires a JS runtime to solve YouTube challenges."
+        if cookies_from_browser
+        else ""
+    )
+    console.print(
+        Panel(
+            "[bold red]No supported JavaScript runtime found for YouTube downloads.[/]\n"
+            "Install Deno (recommended):\n"
+            "[cyan]curl -fsSL https://deno.land/install.sh | sh[/]\n"
+            "Then add [cyan]~/.deno/bin[/] to your PATH, or install Node.js 20+.\n"
+            "See: [cyan]https://github.com/yt-dlp/yt-dlp/wiki/EJS[/]"
+            f"{cookie_note}",
+            title="[red]Missing Dependency",
+            border_style="red",
+        )
+    )
+    sys.exit(1)
+
+
+def apply_ejs_opts(opts: dict) -> dict:
+    """Configure yt-dlp's YouTube challenge solver when a JS runtime is available."""
+    runtime = find_js_runtime()
+    if runtime:
+        name, path = runtime
+        opts["js_runtimes"] = {name: {"path": path}}
+    return opts
+
+
 def apply_network_opts(opts: dict) -> dict:
     """Add retry, timeout, and YouTube client settings to yt-dlp options."""
     opts.setdefault("retries", 10)
@@ -159,6 +261,7 @@ def apply_network_opts(opts: dict) -> dict:
         "extractor_args",
         {"youtube": {"player_client": ["android", "web"]}},
     )
+    apply_ejs_opts(opts)
     return opts
 
 
@@ -719,6 +822,12 @@ def resolve_download_list_args(
     )
 
 
+def prepare_youtube_download(cookies_from_browser: str | None) -> None:
+    """Validate dependencies needed for YouTube downloads."""
+    ensure_linux_cookie_deps(cookies_from_browser)
+    ensure_js_runtime(cookies_from_browser)
+
+
 def cmd_download_url(args: argparse.Namespace) -> int:
     """Handle the download-url subcommand."""
     (
@@ -731,6 +840,7 @@ def cmd_download_url(args: argparse.Namespace) -> int:
         cookies_from_browser,
         cookies_file,
     ) = resolve_download_url_args(args)
+    prepare_youtube_download(cookies_from_browser)
     console.print(
         Panel(
             "[bold cyan]Download URL[/]",
@@ -761,6 +871,7 @@ def cmd_download_list(args: argparse.Namespace) -> int:
         cookies_from_browser,
         cookies_file,
     ) = resolve_download_list_args(args)
+    prepare_youtube_download(cookies_from_browser)
     console.print(
         Panel(
             "[bold cyan]Download URL List[/]",
