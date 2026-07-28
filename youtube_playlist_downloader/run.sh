@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
-# Run the YouTube downloader using the local venv
+# Run the unified downloader CLI using the local venv when available.
 set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# exec "$SCRIPT_DIR/.venv/bin/python" "$SCRIPT_DIR/main.py" "$@"
-exec "$SCRIPT_DIR/.venv/Scripts/python.exe" "$SCRIPT_DIR/main.py" "$@"
+
+if [[ -x "$SCRIPT_DIR/.venv/bin/python" ]]; then
+  PYTHON="$SCRIPT_DIR/.venv/bin/python"
+elif [[ -x "$SCRIPT_DIR/.venv/Scripts/python.exe" ]]; then
+  PYTHON="$SCRIPT_DIR/.venv/Scripts/python.exe"
+else
+  PYTHON="python3"
+fi
+
+if [[ $# -eq 0 ]]; then
+  exec "$PYTHON" "$SCRIPT_DIR/main.py" download-url
+else
+  exec "$PYTHON" "$SCRIPT_DIR/main.py" "$@"
+fi
