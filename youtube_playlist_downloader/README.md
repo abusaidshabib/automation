@@ -1,296 +1,406 @@
 # YouTube Playlist Downloader
 
-Download a full YouTube playlist (or a single video) as MP3 or video, with progress tracking and optional filename cleanup.
+Download a YouTube playlist or a single video as MP3 or video. Also download from a text file of URLs, and clean up MP3 filenames.
+
+CLI flags override `.env`. If a flag is omitted, the matching `.env` value is used.
 
 ## Features
 
-- Download an entire playlist or one video from a URL
-- Audio-only mode (MP3) or video with quality options
-- Skip files that already exist
-- Download from a text file of URLs
-- Clean up messy MP3 filenames after download
-- Uses bundled ffmpeg when system ffmpeg is not installed
+- Download an entire playlist or one video
+- Audio-only MP3 (192 kbps, good for stories and spoken word) or video at a chosen quality
+- Skip files that already exist (re-run to continue an interrupted playlist)
+- Download from a text file of URLs (`mp3`, `m4a`, `wav`, `opus`, `vorbis`)
+- Optional filename cleanup after download
+- Browser cookies or a cookies.txt file for bot-check / age-restricted videos
+- Bundled ffmpeg when system ffmpeg is missing
+- Uses Deno or Node.js 20+ for YouTube's JavaScript challenges
 
-## Quick start
+## Requirements
 
-```bash
-git clone git@github.com:abusaidshabib/automation.git
-cd automation/youtube_playlist_downloader
-python3 -m venv .venv
-source .venv/bin/activate          # Windows: .\.venv\Scripts\activate
-pip install -r requirements.txt
-chmod +x run.sh
+- Python 3.9+
+- [uv](https://docs.astral.sh/uv/)
+- Internet connection
+- ffmpeg (system install or bundled via `imageio-ffmpeg`)
+- Deno (recommended) or Node.js 20+ for YouTube downloads
 
-./run.sh download-url \
-  --url "https://www.youtube.com/playlist?list=YOUR_PLAYLIST_ID" \
-  --output "../downloads/songs" \
-  --audio-only
-```
-
-## Setup (step by step)
-
-### 1. Clone the repository
+## Install
 
 ```bash
 git clone git@github.com:abusaidshabib/automation.git
-cd automation/youtube_playlist_downloader
+cd automation
+uv sync
+chmod +x youtube_playlist_downloader/run.sh
 ```
 
-HTTPS clone:
+HTTPS:
 
 ```bash
 git clone https://github.com/abusaidshabib/automation.git
-cd automation/youtube_playlist_downloader
+cd automation
+uv sync
 ```
 
-### 2. Create and activate a virtual environment
+Install uv if needed:
 
 ```bash
-python3 -m venv .venv
+# Linux / macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-- **Linux / macOS:**
-  ```bash
-  source .venv/bin/activate
-  ```
-- **Windows:**
-  ```bash
-  .\.venv\Scripts\activate
-  ```
+`uv sync` creates `.venv` at the repository root and installs dependencies from `pyproject.toml` / `uv.lock`.
 
-### 3. Install dependencies
+### FFmpeg
+
+Audio conversion needs ffmpeg.
+
+- Bundled (default): `imageio-ffmpeg` from `uv sync`. Used automatically if system ffmpeg is missing.
+- System install:
+  - Linux: `sudo apt-get install ffmpeg`
+  - macOS: `brew install ffmpeg`
+  - Windows: `winget install FFmpeg`
+
+### JavaScript runtime
+
+YouTube downloads need Deno or Node.js 20+.
 
 ```bash
-pip install -r requirements.txt
+curl -fsSL https://deno.land/install.sh | sh
 ```
 
-### 4. Make the run script executable (Linux / macOS)
+Then add `~/.deno/bin` to your PATH, or install Node.js 20+. See [yt-dlp EJS](https://github.com/yt-dlp/yt-dlp/wiki/EJS).
+
+## How to run
+
+Run from the **repository root**. `run.sh` calls `uv run` for you.
 
 ```bash
-chmod +x run.sh
+./youtube_playlist_downloader/run.sh <command> [options]
 ```
 
-### 5. FFmpeg
-
-Audio downloads need ffmpeg to convert to MP3. You have two options:
-
-**Option A — bundled (recommended, no sudo):**  
-Already included via `imageio-ffmpeg` in `requirements.txt`. The tool uses it automatically if system ffmpeg is missing.
-
-**Option B — system install:**
-
-- **Linux (Ubuntu/Debian):**
-  ```bash
-  sudo apt-get install ffmpeg
-  ```
-- **macOS:**
-  ```bash
-  brew install ffmpeg
-  ```
-- **Windows:**
-  ```bash
-  winget install FFmpeg
-  ```
-
-### 6. Optional: configure defaults with `.env`
+No arguments defaults to `download-url` (uses `.env` if present):
 
 ```bash
-cp .env.example .env
+./youtube_playlist_downloader/run.sh
 ```
 
-Edit `.env`:
+Same thing with uv:
+
+```bash
+uv run python youtube_playlist_downloader/main.py <command> [options]
+```
+
+From `youtube_playlist_downloader/`:
+
+```bash
+uv run --project .. python main.py <command> [options]
+```
+
+Show help:
+
+```bash
+./youtube_playlist_downloader/run.sh --help
+./youtube_playlist_downloader/run.sh download-url --help
+./youtube_playlist_downloader/run.sh download-list --help
+./youtube_playlist_downloader/run.sh rename --help
+```
+
+Windows (no `run.sh`):
+
+```bash
+uv run python youtube_playlist_downloader/main.py download-url --help
+```
+
+## Configure defaults with `.env`
+
+```bash
+cp youtube_playlist_downloader/.env.example youtube_playlist_downloader/.env
+```
+
+`.env` is loaded from `youtube_playlist_downloader/.env`, then from the current working directory. CLI flags always win.
+
+| Variable | Used by | Default | Meaning |
+|----------|---------|---------|---------|
+| `PLAYLIST_URL` | `download-url` | (required unless `--url`) | Video or playlist URL |
+| `SAVE_PATH` | `download-url`, `download-list` | `./downloads` | Output folder (absolute or relative to the current directory) |
+| `AUDIO_ONLY` | `download-url` | `false` | `true` = MP3 only; `false` = video |
+| `VIDEO_QUALITY` | `download-url` | `best` | `best`, `1080`, `720`, `480`, `360` (ignored when audio-only) |
+| `SKIP_EXISTING` | `download-url`, `download-list` | `true` | Skip files that already exist |
+| `RENAME_AFTER_DOWNLOAD` | `download-url`, `download-list` | on for audio-only / MP3 | Clean MP3 names after download |
+| `URL_LIST_FILE` | `download-list` | `urls.txt` | Text file of URLs |
+| `AUDIO_FORMAT` | `download-list` | `mp3` | `mp3`, `m4a`, `wav`, `opus`, `vorbis` |
+| `COOKIES_FROM_BROWSER` | both download commands | unset | Browser name, e.g. `chrome`, `firefox`, `brave` |
+| `COOKIES_FILE` | both download commands | unset | Path to a Netscape `cookies.txt` |
+
+Booleans accept `true`, `1`, `yes`, or `on` (any case).
+
+Example `.env` for audio-only downloads:
 
 ```env
 PLAYLIST_URL=https://www.youtube.com/playlist?list=PLxxxxxxxxxxxxxxxx
-SAVE_PATH=../downloads/songs
+SAVE_PATH=/home/lumen/Files/files/gmet
 AUDIO_ONLY=true
 VIDEO_QUALITY=best
 SKIP_EXISTING=true
+RENAME_AFTER_DOWNLOAD=true
 ```
 
-When `.env` is set, you can run `./run.sh download-url` without passing `--url` or `--output`.
-
-## Usage
-
-Run commands from the `youtube_playlist_downloader` folder.
-
-### Using the shell script
+Then:
 
 ```bash
-./run.sh <command> [options]
-```
-
-If you run `./run.sh` with no arguments, it defaults to `download-url` (using `.env` values if present).
-
-### Using Python directly
-
-```bash
-python main.py <command> [options]
+./youtube_playlist_downloader/run.sh download-url
 ```
 
 ## Commands
 
-### `download-url` — download one video or playlist
-
-| Option | Description |
-|--------|-------------|
-| `--url` | YouTube video or playlist URL |
-| `--output` | Folder to save files |
-| `--audio-only` / `--no-audio-only` | Download MP3 only (default: from `.env` or video) |
-| `--quality` | Video quality: `best`, `1080`, `720`, `480`, `360` |
-| `--no-skip-existing` | Re-download even if file already exists |
-
-**Example — full playlist as MP3:**
+### `download-url` — one video or playlist
 
 ```bash
-./run.sh download-url \
-  --url "https://youtube.com/playlist?list=PL1huvitKeyYbl-SqHT8eTRqw4ZDxIqwtH&si=G8bB2xcsaFpNEuUS" \
-  --output "/home/lumen/Projects/automation/downloads/songs" \
-  --audio-only
+./youtube_playlist_downloader/run.sh download-url [options]
 ```
 
-**Example — single video as MP3:**
+| Option | `.env` fallback | Description |
+|--------|-----------------|-------------|
+| `--url URL` | `PLAYLIST_URL` | YouTube video or playlist URL |
+| `--output DIR` | `SAVE_PATH` | Folder to save files (created if missing) |
+| `--audio-only` / `--no-audio-only` | `AUDIO_ONLY` | MP3 only, or keep video |
+| `--quality {best,1080,720,480,360}` | `VIDEO_QUALITY` | Video height cap when not audio-only |
+| `--no-skip-existing` | `SKIP_EXISTING` | Re-download even if the file exists |
+| `--rename` / `--no-rename` | `RENAME_AFTER_DOWNLOAD` | Clean MP3 names after download (default: on for `--audio-only`) |
+| `--cookies-from-browser BROWSER` | `COOKIES_FROM_BROWSER` | Use cookies from Chrome, Firefox, Brave, etc. |
+| `--cookies FILE` | `COOKIES_FILE` | Netscape `cookies.txt` path |
+
+Audio-only MP3 is encoded at **192 kbps** from the best YouTube audio stream. That is clear for stories, lectures, and spoken word.
+
+Playlist files are numbered: `01 - Title.mp3`, `02 - Title.mp3`, … Single videos use the title only.
+
+**Playlist as MP3** (flags):
 
 ```bash
-./run.sh download-url \
-  --url "https://www.youtube.com/watch?v=dQw4w9WgXcQ" \
-  --output "../downloads/songs" \
-  --audio-only
-```
-
-**Example — playlist as video (720p):**
-
-```bash
-./run.sh download-url \
+./youtube_playlist_downloader/run.sh download-url \
   --url "https://www.youtube.com/playlist?list=PLxxxxxxxxxxxxxxxx" \
-  --output "../downloads/videos" \
+  --output "/home/lumen/Files/files/gmet" \
+  --audio-only
+```
+
+**Same job from `.env`:**
+
+```bash
+./youtube_playlist_downloader/run.sh download-url
+```
+
+**Single video as MP3:**
+
+```bash
+./youtube_playlist_downloader/run.sh download-url \
+  --url "https://www.youtube.com/watch?v=dQw4w9WgXcQ" \
+  --output "downloads/songs" \
+  --audio-only
+```
+
+**Playlist as 720p video:**
+
+```bash
+./youtube_playlist_downloader/run.sh download-url \
+  --url "https://www.youtube.com/playlist?list=PLxxxxxxxxxxxxxxxx" \
+  --output "downloads/videos" \
   --no-audio-only \
   --quality 720
 ```
 
-**Example — using `.env` defaults:**
+**Best video quality, keep original names:**
 
 ```bash
-./run.sh download-url --audio-only
+./youtube_playlist_downloader/run.sh download-url \
+  --url "https://www.youtube.com/playlist?list=PLxxxxxxxxxxxxxxxx" \
+  --output "downloads/videos" \
+  --no-audio-only \
+  --quality best \
+  --no-rename
 ```
 
-Playlist files are saved with numbered names, e.g. `01 - Song Title.mp3`.
-
-### `download-list` — download from a text file of URLs
-
-| Option | Description |
-|--------|-------------|
-| `--file` | Text file with one URL per line (default: `urls.txt`) |
-| `--output` | Folder to save files |
-| `--format` | Audio format: `mp3`, `m4a`, `wav`, `opus`, `vorbis` |
-| `--no-skip-existing` | Re-download even if file already exists |
-
-**Example:**
+**Force re-download:**
 
 ```bash
-./run.sh download-list \
-  --file urls.txt \
-  --output "../downloads/songs" \
-  --format mp3
+./youtube_playlist_downloader/run.sh download-url --no-skip-existing
 ```
 
-`urls.txt` format:
+**Pass cookies if YouTube blocks the download:**
+
+```bash
+./youtube_playlist_downloader/run.sh download-url --cookies-from-browser chrome
+./youtube_playlist_downloader/run.sh download-url --cookies /path/to/cookies.txt
+```
+
+Interrupted runs can be started again with the same command. Existing files are skipped unless `--no-skip-existing` is set.
+
+---
+
+### `download-list` — URLs from a text file
+
+Audio only. Default format is MP3 (320 kbps).
+
+```bash
+./youtube_playlist_downloader/run.sh download-list [options]
+```
+
+| Option | `.env` fallback | Description |
+|--------|-----------------|-------------|
+| `--file FILE` | `URL_LIST_FILE` | One URL per line (default: `urls.txt`) |
+| `--output DIR` | `SAVE_PATH` | Folder to save files |
+| `--format {mp3,m4a,wav,opus,vorbis}` | `AUDIO_FORMAT` | Output audio format |
+| `--no-skip-existing` | `SKIP_EXISTING` | Re-download even if the file exists |
+| `--rename` / `--no-rename` | `RENAME_AFTER_DOWNLOAD` | Clean MP3 names after download (default: on for MP3) |
+| `--cookies-from-browser BROWSER` | `COOKIES_FROM_BROWSER` | Browser cookies |
+| `--cookies FILE` | `COOKIES_FILE` | Netscape `cookies.txt` |
+
+`urls.txt` format (blank lines and `#` comments are ignored):
 
 ```
 https://www.youtube.com/watch?v=VIDEO_ID_1
 https://www.youtube.com/watch?v=VIDEO_ID_2
 
-# Lines starting with # are ignored
+# ignored
 https://www.youtube.com/watch?v=VIDEO_ID_3
 ```
 
+**MP3 from a list:**
+
+```bash
+./youtube_playlist_downloader/run.sh download-list \
+  --file youtube_playlist_downloader/urls.txt \
+  --output "downloads/songs" \
+  --format mp3
+```
+
+**M4A, no rename:**
+
+```bash
+./youtube_playlist_downloader/run.sh download-list \
+  --file urls.txt \
+  --output "downloads/songs" \
+  --format m4a \
+  --no-rename
+```
+
+There is also a convenience wrapper that defaults to `download-list`:
+
+```bash
+./song_downloader_from_urls/run.sh --file song_downloader_from_urls/urls.txt --output downloads/songs
+```
+
+---
+
 ### `rename` — clean MP3 filenames
 
-Removes extra text from filenames (e.g. "Official Video", artist suffixes).
-
-**Preview changes (dry run):**
+Strips extra text such as “Official Video”, artist suffixes, and similar labels. Default is a **dry run** (prints what would change).
 
 ```bash
-./run.sh rename --dir "../downloads/songs"
+./youtube_playlist_downloader/run.sh rename --dir DIR [--apply]
+./youtube_playlist_downloader/run.sh rename DIR [--apply]
 ```
 
-**Apply renames:**
+| Option | Description |
+|--------|-------------|
+| `--dir DIR` or positional `DIR` | Folder of MP3 files |
+| `--apply` | Actually rename (without this, only preview) |
+
+**Preview:**
 
 ```bash
-./run.sh rename --dir "../downloads/songs" --apply
+./youtube_playlist_downloader/run.sh rename --dir "/home/lumen/Files/files/gmet"
 ```
 
-## Full workflow example
-
-From a fresh clone to a downloaded playlist:
+**Apply:**
 
 ```bash
-# 1. Clone and enter the project
+./youtube_playlist_downloader/run.sh rename --dir "/home/lumen/Files/files/gmet" --apply
+```
+
+You can also run the standalone script:
+
+```bash
+uv run python rename_songs.py --dir "/home/lumen/Files/files/gmet" --apply
+```
+
+## Typical workflow
+
+```bash
 git clone https://github.com/abusaidshabib/automation.git
-cd automation/youtube_playlist_downloader
+cd automation
+uv sync
+chmod +x youtube_playlist_downloader/run.sh
 
-# 2. Set up Python environment
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-chmod +x run.sh
+cp youtube_playlist_downloader/.env.example youtube_playlist_downloader/.env
+# Edit PLAYLIST_URL, SAVE_PATH, set AUDIO_ONLY=true
 
-# 3. Create a folder for downloads (optional — the tool creates it too)
-mkdir -p ../downloads/songs
+./youtube_playlist_downloader/run.sh download-url
 
-# 4. Download the playlist as MP3
-./run.sh download-url \
-  --url "https://youtube.com/playlist?list=PL1huvitKeyYbl-SqHT8eTRqw4ZDxIqwtH" \
-  --output "../downloads/songs" \
-  --audio-only
-
-# 5. Optional: clean up filenames
-./run.sh rename --dir "../downloads/songs" --apply
+# Optional extra cleanup
+./youtube_playlist_downloader/run.sh rename --dir "/path/to/output" --apply
 ```
-
-## Requirements
-
-- Python 3.8+
-- Internet connection
-- ffmpeg (system install or bundled via `imageio-ffmpeg`)
 
 ## Troubleshooting
 
 ### `ffmpeg not found`
 
-Reinstall dependencies so the bundled ffmpeg is available:
-
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
-Or install system ffmpeg (see Setup step 5).
+Or install system ffmpeg (see Install).
 
-### Leftover `.webm` files after a failed run
+### `No supported JavaScript runtime`
 
-If a download failed before MP3 conversion, remove partial files and retry:
+Install Deno and ensure `~/.deno/bin` is on PATH, or install Node.js 20+.
+
+### YouTube bot check / “Sign in to confirm”
+
+Pass cookies from a logged-in browser:
 
 ```bash
-rm ../downloads/songs/*.webm
-./run.sh download-url --url "YOUR_URL" --output "../downloads/songs" --audio-only
+./youtube_playlist_downloader/run.sh download-url --cookies-from-browser chrome
 ```
 
-### Broken virtual environment after moving the project
+On Linux, browser cookie extraction needs `secretstorage` (already in `uv sync`). If it is missing: `uv sync` from the repo root.
 
-Recreate the venv:
+### Leftover `.webm` or `.part` files
+
+A run failed before MP3 conversion, or was interrupted. Partial `.part` files are removed automatically. Delete leftover `.webm` files and re-run (existing MP3s are skipped):
+
+```bash
+rm /path/to/output/*.webm
+./youtube_playlist_downloader/run.sh download-url
+```
+
+### Broken virtual environment
+
+From the repository root:
 
 ```bash
 rm -rf .venv
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+uv sync
 ```
 
 ### Permission denied on `run.sh`
 
 ```bash
-chmod +x run.sh
+chmod +x youtube_playlist_downloader/run.sh
 ```
+
+### `uv: command not found`
+
+Install uv, then open a new terminal.
+
+### No URL provided
+
+Set `PLAYLIST_URL` in `.env` or pass `--url`.
+
+### URL list file not found
+
+Pass `--file` with a real path, or set `URL_LIST_FILE` in `.env`. The default is `urls.txt` in the current directory.
 
 ## Dependencies
 
@@ -298,3 +408,4 @@ chmod +x run.sh
 - **python-dotenv** — load settings from `.env`
 - **rich** — progress bars and formatted output
 - **imageio-ffmpeg** — bundled ffmpeg for MP3 conversion
+- **secretstorage** — Linux browser-cookie support

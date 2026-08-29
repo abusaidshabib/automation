@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
-# Run the URL-list downloader using the local venv when available.
+# Run the URL-list downloader with uv.
 set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-if [[ -x "$SCRIPT_DIR/.venv/bin/python" ]]; then
-  PYTHON="$SCRIPT_DIR/.venv/bin/python"
-elif [[ -x "$SCRIPT_DIR/.venv/Scripts/python.exe" ]]; then
-  PYTHON="$SCRIPT_DIR/.venv/Scripts/python.exe"
-else
-  PYTHON="python3"
+if ! command -v uv >/dev/null 2>&1; then
+  echo "uv is required. Install it from https://docs.astral.sh/uv/getting-started/installation/" >&2
+  exit 1
 fi
 
-exec "$PYTHON" "$SCRIPT_DIR/main.py" "$@"
+exec uv run --project "$ROOT" python "$SCRIPT_DIR/main.py" "$@"

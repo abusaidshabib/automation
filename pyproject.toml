@@ -1,0 +1,15 @@
+[project]
+name = "automation"
+version = "0.1.0"
+description = "Download YouTube playlists and URL lists as audio or video"
+requires-python = ">=3.9"
+dependencies = [
+    "yt-dlp[default]>=2024.1.1",
+    "python-dotenv>=1.0.0",
+    "rich>=13.7.0",
+    "imageio-ffmpeg>=0.5.0",
+    "secretstorage>=3.3.3; sys_platform == 'linux'",
+]
+
+[tool.uv]
+package = false

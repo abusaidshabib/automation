@@ -1,44 +1,39 @@
-# 🎵 Song Downloader from URL List
+# Song Downloader from URL List
 
 A Python tool to download songs from a list of URLs (YouTube, SoundCloud, etc.) with rich progress tracking.
 
 ## Features
 
-- ✨ Download songs from multiple URLs at once
-- 🎶 Multiple audio format support (MP3, M4A, WAV, OPUS, VORBIS)
-- 📊 Rich progress tracking with download speed and ETA
-- 🔄 Skip existing files option
-- 🎯 Simple URL list format (one URL per line)
-- 📝 Comment support in URL list (#)
+- Download songs from multiple URLs at once
+- Multiple audio format support (MP3, M4A, WAV, OPUS, VORBIS)
+- Rich progress tracking with download speed and ETA
+- Skip existing files option
+- Simple URL list format (one URL per line)
+- Comment support in URL list (#)
 
 ## Setup
 
-1. **Clone or create the project directory**
+1. **Clone or enter the repository**
    ```bash
-   cd song_downloader_from_urls
+   cd automation
    ```
 
-2. **Create a virtual environment**
-   ```bash
-   python -m venv .venv
-   ```
-
-3. **Activate the virtual environment**
-   - On Windows:
+2. **Install uv** (if needed)
+   - Linux / macOS:
      ```bash
-     .\.venv\Scripts\activate
+     curl -LsSf https://astral.sh/uv/install.sh | sh
      ```
-   - On macOS/Linux:
+   - Windows:
      ```bash
-     source .venv/bin/activate
+     powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
      ```
 
-4. **Install dependencies**
+3. **Install dependencies** from the repository root
    ```bash
-   pip install -r requirements.txt
+   uv sync
    ```
 
-5. **Install FFmpeg** (required for audio conversion)
+4. **Install FFmpeg** (required for audio conversion)
    - **Windows (using Chocolatey):**
      ```bash
      choco install ffmpeg
@@ -60,7 +55,7 @@ A Python tool to download songs from a list of URLs (YouTube, SoundCloud, etc.) 
 
 1. **Copy the example environment file:**
    ```bash
-   cp .env.example .env
+   cp song_downloader_from_urls/.env.example song_downloader_from_urls/.env
    ```
 
 2. **Edit `.env` to customize settings:**
@@ -73,7 +68,7 @@ A Python tool to download songs from a list of URLs (YouTube, SoundCloud, etc.) 
 
 3. **Create your URL list:**
    ```bash
-   cp urls.txt.example urls.txt
+   cp song_downloader_from_urls/urls.txt.example song_downloader_from_urls/urls.txt
    ```
 
 4. **Edit `urls.txt` and add your URLs:**
@@ -89,17 +84,20 @@ A Python tool to download songs from a list of URLs (YouTube, SoundCloud, etc.) 
 
 ### Using the shell script (macOS/Linux):
 ```bash
-./run.sh
+./song_downloader_from_urls/run.sh
 ```
 
-### Using Python directly:
+### Using uv directly:
+
+From the repository root:
+
 ```bash
-python main.py
+uv run python song_downloader_from_urls/main.py
 ```
 
 ### With custom environment:
 ```bash
-URL_LIST_FILE=my_songs.txt AUDIO_FORMAT=m4a python main.py
+URL_LIST_FILE=my_songs.txt AUDIO_FORMAT=m4a uv run python song_downloader_from_urls/main.py
 ```
 
 ## Supported Platforms
@@ -112,7 +110,8 @@ URL_LIST_FILE=my_songs.txt AUDIO_FORMAT=m4a python main.py
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.9+
+- [uv](https://docs.astral.sh/uv/)
 - FFmpeg (for audio conversion)
 - Internet connection
 
@@ -127,7 +126,13 @@ Some videos may have restrictions. Check if the URL is publicly accessible and n
 ### Permission denied (macOS/Linux)
 Make `run.sh` executable:
 ```bash
-chmod +x run.sh
+chmod +x song_downloader_from_urls/run.sh
+```
+
+### `uv: command not found`
+Install uv, then open a new terminal:
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 ## Dependencies

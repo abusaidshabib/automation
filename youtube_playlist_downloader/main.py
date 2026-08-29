@@ -105,7 +105,7 @@ def require_ffmpeg() -> str:
         Panel(
             "[bold red]ffmpeg is required for audio downloads.[/]\n"
             "Install it with [cyan]sudo apt install ffmpeg[/] or run:\n"
-            "[cyan]pip install imageio-ffmpeg[/]",
+            "[cyan]uv sync[/]",
             title="[red]Missing Dependency",
             border_style="red",
         )
@@ -202,9 +202,9 @@ def ensure_linux_cookie_deps(cookies_from_browser: str | None) -> None:
             Panel(
                 "[bold red]Browser cookie extraction needs secretstorage on Linux.[/]\n"
                 "Install it with:\n"
-                f"[cyan]{SCRIPT_DIR / '.venv' / 'bin' / 'python3'} -m pip install secretstorage[/]\n"
-                "or reinstall dependencies:\n"
-                f"[cyan]{SCRIPT_DIR / '.venv' / 'bin' / 'python3'} -m pip install -r requirements.txt[/]",
+                "[cyan]uv add secretstorage[/]\n"
+                "or reinstall dependencies from the repo root:\n"
+                "[cyan]uv sync[/]",
                 title="[red]Missing Dependency",
                 border_style="red",
             )
