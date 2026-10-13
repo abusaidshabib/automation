@@ -1,0 +1,278 @@
+Playlist: Songs
+URL: https://youtube.com/playlist?list=PL1huvitKeyYbl-SqHT8eTRqw4ZDxIqwtH
+Playable videos: 130
+
+A block is one song. Positions are the playlist order, top to bottom.
+Names in one block match, including case and small spelling differences ("kaha" / "kahan").
+A blank line means a different song. "Tu Hai Kahan" is not grouped with "Tu Hai Mera".
+
+DUPLICATE SONGS (1)
+========================================================================
+[1] tomake chai  (2 copies)
+  position 79    Tomake Chai Title Track
+             https://www.youtube.com/watch?v=ma9OQYW33-0
+  position 94    Tomake Chai Title Track | তোমাকে চাই | Bonny | Koushani | Arijit Singh | Indraadip Dasgupta | SVF
+             https://www.youtube.com/watch?v=3mW_-8jGOMs
+
+ALL TITLES
+========================================================================
+Similar titles are in the same block. Blocks are alphabetical.
+
+            56  (untitled)
+
+            74  Aalote Chol - Lyrical (আলোতে চল) | Srikanto | Rishav - Sohini | Debayan | Anis | Pralay | |SVF Music
+
+           105  Aami Tomar Kache | Yoddha | Dev | Mimi | Arijit Singh | Indraadip | Raj Chakraborty | SVF
+
+           113  Abeer Nehme - Bi Saraha | عبير نعمة - بصراحة
+
+           107  Adele - Skyfall (Official Lyric Video)
+
+            50  Ae Dil Hai Mushkil (Title Track) - Full Video | Ranbir, Anushka, Aishwarya | Arijit Singh | Pritam
+
+            11  Agar Tum Saath Ho FULL AUDIO Song | Tamasha | Ranbir Kapoor, Deepika Padukone | T-Series
+
+            95  Akasheo Alpo Neel | Full Song | KABIR | Dev | Rukmini | Aniket C | Indraadip | Arijit Singh
+
+           121  Akhiyaan Gulaab (Lyrics): Shahid Kapoor, Kriti Sanon | Mitraz | Teri Baaton Mein Aisa Uljha Jiya
+
+            20  Alec Benjamin - Let Me Down Slowly (Lyrics)
+
+            39  Alessia Cara - Scars To Your Beautiful (Official Video)
+
+            33  Anne-Marie - 2002 (Lyrics)
+
+            48  Apna Bana Le - Bhediya | Varun Dhawan, Kriti Sanon| Sachin-Jigar, Arijit Singh, Amitabh Bhattacharya
+
+            83  Arijit Singh "Mon Majhi Re" Full HD Video Song | Boss Bengali Movie | Jeet & Subhasree
+
+            45  Asim Azhar - Jo Tu Na Mila | Kunaal Vermaa
+
+            23  Astrid S - Hurts So Good (Lyrics)
+
+           103  Atif Aslam : Darasal Video With Lyrics | Raabta | Sushant Singh Rajput & Kriti Sanon
+
+            57  Atif Aslam: Pehli Dafa Song (Video) | Ileana D’Cruz | Latest Hindi Song 2017 | T-Series
+
+            13  AURORA - Runaway
+
+            31  Ava Max - Kings & Queens [Official Music Video]
+
+            34  Ava Max - So Am I [Official Music Video]
+
+            30  Ava Max - Sweet but Psycho [Official Music Video]
+
+            59  LYRICAL: Awari Song | Ek Villain | Sidharth Malhotra | Shraddha Kapoor
+
+           120  Bayaan - Maand (Lyrics) ft. Hasan Raheem, Rovalio
+
+            35  Bebe Rexha - I'm A Mess [Official Music Video]
+
+           126  Benche Thakar Gaan (বেঁচে থাকার গান) | Lyrical | Autograph | Prosenjit | Rupam Islam | Srijit
+
+            97  Benche Theke Labh Ki Bol | Rangbaaz | Dev | Koel | Arijit Singh | Jeet Gannguli
+
+           110  Bewafa Tera Masoom Chehra | Rochak Kohli Feat. Jubin Nautiyal, Rashmi V | Karan Mehra, Ihana Dhillon
+
+           104  Bhalobeshe Kono Bhool | Bindaas | Dev | Srabanti | Sayantika | Arindom | Shalmali Kholgade | SVF
+
+           111  Bjorn Bonebreaker - Mama, Don't Close Your Eyes [Official Lyrics Video]
+
+            87  Bojhena Shey Bojhena (বোঝেনা সে বোঝেনা) | Title Track |Soham |Abir | Payel |Mimi | Arijit Singh |SVF
+
+            85  Borbaad Hoyechi Ami
+
+            16  Chahun Main Ya Naa Full Video Song Aashiqui 2 | Aditya Roy Kapur, Shraddha Kapoor
+
+            64  Channa Mereya - Lyric Video | Ae Dil Hai Mushkil | Karan Johar | Ranbir | Anushka | Pritam | Arijit
+
+            17  Christina Perri - A Thousand Years
+
+            53  Coke Studio | Season 14 | Pasoori | Ali Sethi x Shae Gill
+
+            29  David Guetta, Bebe Rexha & J Balvin - Say My Name (Official Video)
+
+           109  Deewaana Deewaana (Full Video): Tere Ishk Mein | Dhanush, Kriti | AR Rahman | Aanand LR | Bhushan K
+
+           129  Dhadak - Title Track | Dhadak | Ishaan & Janhvi |Ajay Gogavale & Shreya Ghoshal, Ajay-Atul | Lyrical
+
+            43  Dooriyan - Dino James ft. Kaprila [Official Music Video]
+
+            22  Duncan Laurence - Arcade (Lyrics) ft. FLETCHER
+
+            21  Ed Sheeran - Shape Of You (Lyrics)
+
+            92  Egiye de | Shudhu Tomari Jonyo | Dev | Srabanti | Arijit Singh | Madhubanti Bagchi | Arindom | SVF
+
+            81  Ei Bhalo Ei Kharap
+
+           106  EK (one) by Shakib
+
+            86  Ek Mutho Swapno | 100% love | JEET | Koel | Ravi Kinagi | Jeet Gannguli | Gopal M. | Amit J.
+
+            96  Eka Din (একা দিন) | Lyrical | Full Audio | Fidaa | Yash | Sanjana | Minar | Arindom | SVF Music
+
+            90  Eka Ekela Mon | Chirodini Tumi Je Amar 2 | Arjun Chakraborty | Arijit Singh | SVF
+
+           122  Ektai Tumi | একটাই তুমি | Tahsan | Puja | Sharlina | Sajid Sarker | Bangla Song 2018
+
+           125  Eminem - Mockingbird [Official Music Video]
+
+            38  Fifth Harmony - Work from Home (Official Video) ft. Ty Dolla $ign
+
+            27  G-Eazy & Halsey - Him & I (Official Video)
+
+           128  Gaibona | গাইবো না | Sumon & Anila | Album Ekhon Ami | Official HIt Music Video
+
+            71  Gerua - Shah Rukh Khan | Kajol | Dilwale | Pritam | Arijit Singh | Antara Mitra
+
+            41  Girl I Need You Lyrical | BAAGHI | Tiger, Shraddha | Arijit Singh, Meet Bros, Roach Killa, Khushboo
+
+            12  Hai Dil Ye Mera Full Video Song | Arijit Singh | Hate Story 2 | Jay Bhanushali, Surveen Chawla
+
+            58  Har Funn Maula (Full Video) Koi Jaane Na | Aamir Khan | Elli A | Vishal D Zara K Tanishk B Amitabh B
+
+            72  Hawayein - Lyrical Video | Jab Harry Met Sejal | Shah Rukh Khan, Anushka | Arijit Singh | Pritam
+
+            10  Official Video: Humnava Mere Song | Jubin Nautiyal | Manoj Muntashir | Rocky - Shiv | Bhushan Kumar
+
+           127  Humsafar Song | Saiyaara | Ahaan Panday | Aneet Padda| Sachet Tandon, Parampara Tandon, Irshad Kamil
+
+           108  I'm here now | Inner child healing song | Self-love journey
+
+            37  Ik Vaari Aa Full Song | Raabta | Sushant Singh Rajput & Kriti Sanon | Pritam Arijit Singh Amitabh B
+
+            32  Jamie Miller - Here's Your Perfect (Official Music Video)
+
+            70  Janam Janam – Dilwale | Shah Rukh Khan | Kajol | Pritam | SRK | Kajol | Lyric Video 2015
+
+            52  Jeena Jeena - Full Audio Song | Badlapur | Varun Dhawan, Yami Gautam | Sachin-Jigar
+
+            93  JENO TOMARI KACHE (যেন তোমারি কাছে) | LYRICAL | Shudhu Tomari Jonyo |  Dev | Srabanti | SVF Music
+
+           112  John Michael Howell & ZVC - Elements [OFFICIAL LYRIC VIDEO]
+
+            44  Kalank Title Track - Lyrical | Alia Bhatt , Varun Dhawan | Arijit Singh | Pritam| Amitabh
+
+            55  Karone Okarone | Minar Rahman | Official Music Video | Eagle Music
+
+            98  KAUN TUJHE  Lyrical | M.S. DHONI -THE UNTOLD STORY | Amaal Mallik Palak | Sushant Singh Disha Patani
+
+            67  Kesariya - Film Version | Brahmāstra | Ranbir | Alia | Pritam | Arijit | Amitabh
+
+            65  Khamoshiyan (Title Song) Lyrics | Arijit Singh | Rashmi S , Jeet G | Ali Fazal , Sapna P & Gurmeet C
+
+            73  Killer Haseena (Video) Arjun Kanungo, Tulsi Kumar | AK vs TK | Vayu, Diksha C | Bhushan Kumar
+
+           130  Kiston - Full Song-Roohi|Rajkummar,Janhvi,Varun|Sachin-Jigar|Jubin Nautiyal|Amitabh B
+
+            88  Kothin ( কঠিন ) | Bojhena Shey Bojhena | Soham | Mimi | Ash King | Sayani | Arindom | Raj | SVF
+
+            62  Lyrical: Labon Ko | Bhool Bhulaiyaa | Pritam | K.K.| Akshay Kumar, Shiney Ahuja, Vidya Balan
+
+           118  Long Distance Love | Coke Studio Bangla | Season 3 | Ankan X Afrin | Shuvendu
+
+           101  Lut Gaye (Full Song) Emraan Hashmi, Yukti | Jubin N, Tanishk B, Manoj M | Bhushan K | Radhika-Vinay
+
+            14  LYRICAL: Main Agar Kahoon | Om Shanti Om | Shahrukh Khan,Deepika Padukone | Sonu Nigam,Shreya Ghosal
+
+            47  Main Agar Lyric Video - Tubelight | Salman Khan, Sohail Khan | Pritam | Atif Aslam | Kabir Khan
+
+            63  Main Rahoon Ya Na Rahoon Full Video | Emraan Hashmi, Esha Gupta | Amaal Mallik, Armaan Malik
+
+           115  Majboor | Sheheryar Rehan x Zoha Waseem | Music Video 2025 | Aap ka he kehna banta
+
+            36  Malang Sajna (Video) Sachet Tandon, Parampara Tandon | Adil Shaikh, Kumaar | Bhushan Kumar
+
+            84  Minar Rahman - Keu Kotha Rakheni (Official Music Video 2020)
+
+            89  Mon Bojhe Naa (মন বোঝে না) | Chirodini Tumi Je Amar 2 | Arjun Chakraborty | Arijit Singh | SVF
+
+             2  Mujhe Peene Do - Darshan Raval | Official Music Video | Romantic Song 2020 | Naushad Khan
+
+            66  Muskurane ki Wajah tum ho song (lyrics)| Arijit Singh | Movie- Citylight
+
+           124  NF - HOPE
+
+           123  NF - The Search
+
+            82  Parbona Ami Charte Toke - Lyrical | Title Track | Bonny | Koushani | Arijit | Indraadip | Raj C |SVF
+
+            19  Raabta (Kehte Hain Khuda) Full Song With Lyrics | Agent Vinod | Saif Ali Khan, Kareena Kapoor,Pritam
+
+             8  Ruth B. - Dandelions (Lyrics)
+
+            61  SAFAR (Official Video) Juss x MixSingh
+
+           114  Sahiba (Official Music Video) : Aditya Rikhari, Ankita Chhetri | T-Series
+
+            75  @SaiAbhyankkar - Aasa Kooda (Music Video) | Thejo Bharathwaj | Preity Mukhundhan | Sai Smriti
+
+            69  Salamat Full Song with Lyrics | SARBJIT | Randeep Hooda, Richa Chadda | T-Series
+
+             7  SANAM RE Title  Song FULL VIDEO | Pulkit Samrat, Yami Gautam, Urvashi Rautela | Divya Khosla Kumar
+
+             4  Sasha Alex Sloan - Dancing With Your Ghost (Lyric Video)
+
+           102  Sawaar Loon Lootera Song With Lyrics | Ranveer Singh, Sonakshi Sinha
+
+           117  SawanoHiroyuki[nZk]:XAI 『DARK ARIA ＜LV2＞』 Music Video
+
+            76  Saware Lyrical Video | Phantom | Saif Ali Khan & Katrina Kai | Arijit Singh |  Pritam | T-Series
+
+            25  Selena Gomez, Marshmello - Wolves (Lyrics)
+
+            68  Shayad - Love Aaj Kal | Kartik | Sara | Arushi | Pritam | Arijit Singh
+
+           116  Sherine - Kalam Eineh | شيرين - كلام عينيه
+
+            77  Shironamhin | Ei Obelay | Official Performance Video
+
+            91  Shudhu Tomari Jonyo (শুধু তোমারি জন্য) Lyrical | Arijit Singh, Shreya Ghoshal | Indraadip Dasgupta
+
+            24  Sia - Unstoppable (Lyrics)
+
+           119  Simroon Tera Naam (Lyrical): Yaariyan 2 |Divya Khosla K, Yash|Manan, Sachet|Radhika, Vinay|Bhushan K
+
+            26  SLANDER - Love Is Gone ft. Dylan Matthew (Acoustic) - Lyrics
+
+            18  somewhere only we know - rhianne (cover)
+
+             5  Sun Saathiya - Full Song - Disney's ABCD 2 | Varun Dhawan - Shraddha Kapoor | Sachin - Jigar
+
+             9  Sunn Raha Hai Na Tu Aashiqui 2 Full Song With Lyrics | Aditya Roy Kapur, Shraddha Kapoor
+
+            51  Tera Hone Laga Hoon Lyrical - Ajab Prem Ki Ghazab Kahani | Atif Aslam | Ranbir, Katrina K | Pritam
+
+            99  Tere Hawaale (Full Video) Laal Singh Chaddha | Aamir,Kareena | Pritam,Arijit,Shilpa | Amitabh,Advait
+
+            15  The Chainsmokers & Coldplay - Something Just Like This (Official Lyric Video)
+
+            80  Thik Emon Ebhabe
+
+           100  Tinka Tinka Dil Mera - Lyric Video | Tubelight | Salman Khan | Rahat Fateh Ali Khan | Pritam
+
+DUPLICATE   79  Tomake Chai Title Track
+DUPLICATE   94  Tomake Chai Title Track | তোমাকে চাই | Bonny | Koushani | Arijit Singh | Indraadip Dasgupta | SVF
+
+            49  Toota Jo Kabhi Tara - Tiger Shroff, Jacqueline | Sumedha K | Sachin Jigar
+
+            46  Tu Hai Kahan by AUR | تو ہے کہاں feat. ZAYN (Official Music Video)
+
+            54  Tu Har Lamha - Lyrical Video | Khamoshiyan | Arijit Singh | Ali Fazal | Sapna Pabbi
+
+            42  'Tu Jo Mila' VIDEO Song - K.K. Pritam | Salman Khan, Nawazuddin, Harshaali | Bajrangi Bhaijaan
+
+             1  Tumse Mohabbat Hai (Slowed & Reverbed) ft. Smriti Thakur - JalRaj | Latest Hindi Song 2022
+
+             3  Lyrical: Uska Hi Banana | 1920 Evil Returns | Arijit Singh | Aftab Shivdasani, Tia Bajpai
+
+            78  Ve Kamleya | Rocky Aur Rani Kii Prem Kahaani | Ranveer | Alia | Pritam | Amitabh | Arijit | Shreya
+
+            28  Wiz Khalifa - See You Again ft. Charlie Puth [Official Video] Furious 7 Soundtrack
+
+             6  Zaalima - Lyrical | Raees | Shah Rukh Khan | Arijit Singh & Harshdeep K | JAM8-Pritam
+
+            40  'Zindagi Kuch Toh Bata (Reprise)' Song Pritam | Salman & Kareena  | Bajrangi Bhaijaan | Jubin
+
+            60  দীপান্বিতা || Dipannita || Lofi Remake || Tarif || Shifat || Ahmed Shakib || Lyrics Video

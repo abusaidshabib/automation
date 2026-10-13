@@ -1,0 +1,3 @@
+# YouTube playlist or single-video URL (first non-comment line wins).
+# Override with --url or PLAYLIST_URL in .env.
+https://youtube.com/playlist?list=PL1huvitKeyYbl-SqHT8eTRqw4ZDxIqwtH
